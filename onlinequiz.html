@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <title>Frontend Quiz @ CGI</title>
+    <style>
+        body {
+            background-color: #1e1e2f; /* dark background */
+            color: white;
+            font-family: "DejaVu Sans", sans-serif;
+        }
+
+        .MainForm {
+            background: linear-gradient(135deg, #ff5f6d, #ffc371);
+            border: 5px solid #222;
+            color: #fff;
+            font-weight: bold;
+            margin: 20px auto;
+            padding: 20px;
+            width: 420px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        p.title {
+            color: #33CCFF;
+            font-size: 50px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        input[type="button"] {
+            background-color: #ffffff;
+            color: #000000;
+            border: 2px solid #33CCFF;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="button"]:hover {
+            background-color: #33CCFF;
+            color: white;
+            border-color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(51, 204, 255, 0.8);
+        }
+
+        #Question {
+            font-size: 20px;
+        }
+
+        label {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body onload="loadQuiz()">
+    <p class="title">Frontend Quiz</p>
+    <div class="MainForm" align="Left">
+        <form name="QuizForm" id="quizForm" method="GET">
+            <p id="Question">This is the question</p>
+            <input type="radio" name="OptionR" id="Opt1" onclick="chooseAnswer(1)"/>
+            <label id="Option0">Option 1</label><br/>
+            <input type="radio" name="OptionR" id="Opt2" onclick="chooseAnswer(2)"/>
+            <label id="Option1">Option 2</label><br/>
+            <input type="radio" name="OptionR" id="Opt3" onclick="chooseAnswer(3)"/>
+            <label id="Option2">Option 3</label><br/>
+            <input type="radio" name="OptionR" id="Opt4" onclick="chooseAnswer(4)"/>
+            <label id="Option3">Option 4</label><br/><br/><br/>
+            <input type="button" value="Next" onclick="nextQuestion()">
+        </form>
+    </div>
+
+    <script>
+        // ======= VARIABLES =======
+        let totalQuestions = 5;
+        let questions = new Array(totalQuestions);
+        let options = new Array(totalQuestions);
+        let correctAnswers = new Array(totalQuestions);
+        let selected = false;
+        let questionIndex = 0;
+        let score = 0;
+        let chosenAnswer = 0;
+
+        for (let i = 0; i < totalQuestions; i++) {
+            options[i] = new Array(4);
+        }
+
+        // ======= FRONTEND QUESTIONS =======
+         questions[0] = "Which HTML tag is used to link an external CSS file?";
+        options[0][0] = "&lt;script&gt;";
+        options[0][1] = "&lt;style&gt;";
+        options[0][2] = "&lt;link&gt;";
+        options[0][3] = "&lt;css&gt;";
+        correctAnswers[0] = 3;
+
+        questions[1] = "Which CSS property is used to change text color?";
+        options[1][0] = "font-color";
+        options[1][1] = "text-color";
+        options[1][2] = "color";
+        options[1][3] = "font-style";
+        correctAnswers[1] = 3;
+
+        questions[2] = "Which of the following is NOT a valid JavaScript data type?";
+        options[2][0] = "undefined";
+        options[2][1] = "float";
+        options[2][2] = "boolean";
+        options[2][3] = "string";
+        correctAnswers[2] = 2;
+
+        questions[3] = "What does CSS stand for?";
+        options[3][0] = "Colorful Style Sheets";
+        options[3][1] = "Creative Styling System";
+        options[3][2] = "Cascading Style Sheets";
+        options[3][3] = "Computer Style Syntax";
+        correctAnswers[3] = 3;
+
+        questions[4] = "Which JavaScript method is used to write into an HTML element?";
+        options[4][0] = "document.writeHTML()";
+        options[4][1] = "document.innerHTML()";
+        options[4][2] = "document.getElementById().innerHTML =";
+        options[4][3] = "HTML.write()";
+        correctAnswers[4] = 3;
+
+        // ======= FUNCTIONS =======
+        function chooseAnswer(ans) {
+            chosenAnswer = ans;
+            selected = true;
+        }
+
+        function loadQuiz() {
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            document.getElementById("Question").innerHTML = 
+                "(" + (questionIndex + 1) + ") : " + questions[questionIndex];
+            document.getElementById("Option0").innerHTML = "(a) " + options[questionIndex][0];
+            document.getElementById("Option1").innerHTML = "(b) " + options[questionIndex][1];
+            document.getElementById("Option2").innerHTML = "(c) " + options[questionIndex][2];
+            document.getElementById("Option3").innerHTML = "(d) " + options[questionIndex][3];
+
+            document.getElementById("Opt1").checked = false;
+            document.getElementById("Opt2").checked = false;
+            document.getElementById("Opt3").checked = false;
+            document.getElementById("Opt4").checked = false;
+            chosenAnswer = 0;
+        }
+
+        function nextQuestion() {
+            if (chosenAnswer === correctAnswers[questionIndex]) {
+                score++;
+            }
+
+            if (selected) {
+                if (questionIndex < totalQuestions - 1) {
+                    questionIndex++;
+                    loadQuestion();
+                } else {
+                    alert("End of Quiz!\nYour Score: " + score + " / " + totalQuestions);
+                }
+                selected = false;
+            } else {
+                alert("Please select an option before proceeding.");
+            }
+        }
+    </script>
+</body>
+</html>
